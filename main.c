@@ -6,17 +6,13 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 20:02:31 by lleineck          #+#    #+#             */
-/*   Updated: 2026/03/24 20:04:13 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/03/25 20:28:44 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	main(int argc, char **argv)
+int main()
 {
-	if (argc == 2)
-	{
-		printf("%d\n", ft_atoi(argv[1]));
-	}
-	return (0);
+    return 0;
 }
