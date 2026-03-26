@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 19:15:32 by lleineck          #+#    #+#             */
-/*   Updated: 2026/03/25 20:27:59 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/03/26 19:31:46 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <pthread.h>
 
 
-typedef struct t_data
+typedef struct s_data
 {
 	int				number_of_philosophers;
 	int				number_of_forks;
@@ -33,7 +33,7 @@ typedef struct t_data
 	struct s_philo	*philos;
 }	t_data;
 
-typedef struct t_philo
+typedef struct s_philo
 {
 	int				id;
 	int				meals_eaten;
@@ -52,6 +52,8 @@ int		ft_atoi(const char *s);
 int		validate_args(int argc, char **argv);
 void	parse_and_init(int argc, char **argv, t_data *t_data);
 int		init_mutexes(t_data *t_data);
+int		init_mutexes(t_data *t_data);
+void	destroy_mutexes(t_data *t_data);
 
 
 
