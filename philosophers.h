@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 19:15:32 by lleineck          #+#    #+#             */
-/*   Updated: 2026/03/26 19:31:46 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/03/27 18:51:43 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <sys/time.h>
+
 
 
 typedef struct s_data
@@ -44,6 +46,11 @@ typedef struct s_philo
 	pthread_mutex_t	*right_fork;
 }	t_philo;
 
+typedef struct s_timeval
+{
+	long	tv_sec;
+	long	tv_usec;
+}	t_timeval;
 
 size_t	ft_strlen(const char *str);
 void	*ft_memcpy(void *dest, const void *src, size_t n);

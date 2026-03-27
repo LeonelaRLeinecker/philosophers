@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 18:29:38 by lleineck          #+#    #+#             */
-/*   Updated: 2026/03/26 19:40:22 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/03/27 19:01:24 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,21 @@ int	init_philosophers(struct s_data *t_data)
 	return (1);
 }
 
+int	get_current_time(struct s_timeval *t_timeval)
+{
+	int	current_time;
+
+	t_timeval = gettimeofday();
+	current_time = (t_timeval->tv_sec * 1000) + (t_timeval->tv_usec / 1000);
+	return (current_time);
+}
+
 void	philo_routine(struct s_data *t_data, struct s_philo *t_philo)
 {
+	if ((get_current_time(t_timeval) - t_philo->last_meal) < t_data->time_to_die)
+	{
+		
+	} 
 	
 
 }
