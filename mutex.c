@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 18:01:31 by lleineck          #+#    #+#             */
-/*   Updated: 2026/03/27 17:40:32 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/03/31 18:15:14 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,12 @@ int	init_mutexes(t_data *t_data)
 		return (0);
 	if (pthread_mutex_init(&t_data->write_mutex, NULL) != 0)
 	{
-		destroy_mutexes(t_data);
+		cleanup_data(t_data);
 		return (0);
 	}
 	if (pthread_mutex_init(&t_data->death_mutex, NULL) != 0)
 	{
-		pthread_mutex_destroy(&t_data->write_mutex);
-		destroy_mutexes(t_data);
+		cleanup_data(t_data);
 		return (0);
 	}
 	return (1);

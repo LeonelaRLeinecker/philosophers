@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 19:15:32 by lleineck          #+#    #+#             */
-/*   Updated: 2026/03/31 16:48:35 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/03/31 18:13:52 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ typedef struct s_philo
 {
 	int				id;
 	int				meals_eaten;
-	int				last_meal;
+	long			last_meal;
 	pthread_t		thread;
-	t_data			*data;
+	t_data			*t_data;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 }	t_philo;
@@ -53,12 +53,13 @@ typedef struct s_timeval
 	long	tv_usec;
 }	t_timeval;
 
-int		ft_atoi(const char *s);
+int		ft_atoi_long(const char *s);
 int		validate_args(int argc, char **argv);
 void	parse_and_init(int argc, char **argv, t_data *t_data);
 int		init_mutexes(t_data *t_data);
-int		init_mutexes(t_data *t_data);
 void	error_exit(const char *error);
+long	get_current_time(void);
+void	cleanup_data(t_data *t_data);
 
 
 
