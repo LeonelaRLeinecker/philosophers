@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 19:15:32 by lleineck          #+#    #+#             */
-/*   Updated: 2026/03/27 18:51:43 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/03/31 16:48:35 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,23 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <limits.h>
 
 
 
 typedef struct s_data
 {
-	int				number_of_philosophers;
-	int				number_of_forks;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				must_eat_count;
+	long			number_of_philosophers;
+	long			number_of_forks;
+	long			time_to_die;
+	long			time_to_eat;
+	long			time_to_sleep;
+	long			must_eat_count;
 	int				someone_die;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	write_mutex;
 	pthread_mutex_t	death_mutex;
-	struct s_philo	*philos;
+	t_philo			*philos;
 }	t_data;
 
 typedef struct s_philo
@@ -52,15 +53,12 @@ typedef struct s_timeval
 	long	tv_usec;
 }	t_timeval;
 
-size_t	ft_strlen(const char *str);
-void	*ft_memcpy(void *dest, const void *src, size_t n);
-char	*ft_substr(const char *s, unsigned int start, size_t len);
 int		ft_atoi(const char *s);
 int		validate_args(int argc, char **argv);
 void	parse_and_init(int argc, char **argv, t_data *t_data);
 int		init_mutexes(t_data *t_data);
 int		init_mutexes(t_data *t_data);
-void	destroy_mutexes(t_data *t_data);
+void	error_exit(const char *error);
 
 
 
