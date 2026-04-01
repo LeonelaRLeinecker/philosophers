@@ -34,45 +34,70 @@ int	init_philosophers(struct s_data *data)
 	return (1);
 }
 
+static void	eat_even_philo(t_philo *philo)
+{
+	pthread_mutex_lock(philo->left_fork);
+	print_state(philo, "has taken a fork");
+	pthread_mutex_lock(philo->right_fork);
+	print_state(philo, "has taken a fork");
+	print_state(philo, "is eating");
+	pthread_mutex_lock(&philo->t_data->death_mutex);
+	philo->last_meal = get_current_time();
+	philo->meals_eaten++;
+	pthread_mutex_unlock(&philo->t_data->death_mutex);
+	smart_sleep(philo->t_data->time_to_eat, philo->t_data);
+	pthread_mutex_unlock(philo->right_fork);
+	pthread_mutex_unlock(philo->left_fork);
+}
 
-void	philo_routine(void *arg)
+static void	eat_odd_philo(t_philo *philo)
+{
+	pthread_mutex_lock(philo->right_fork);
+	print_state(philo, "has taken a fork");
+	pthread_mutex_lock(philo->left_fork);
+	print_state(philo, "has taken a fork");
+	print_state(philo, "is eating");
+	pthread_mutex_lock(&philo->t_data->death_mutex);
+	philo->last_meal = get_current_time();
+	philo->meals_eaten++;
+	pthread_mutex_unlock(&philo->t_data->death_mutex);
+	smart_sleep(philo->t_data->time_to_eat, philo->t_data);
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
+}
+
+static void	*handle_single_philosopher(t_philo *philo)
+{
+	pthread_mutex_lock(philo->left_fork);
+	print_state(philo, "has taken a fork");
+	usleep(philo->t_data->time_to_die * 1000);
+	pthread_mutex_unlock(philo->left_fork);
+	return (NULL);
+}
+
+void	*philo_routine(void *arg)
 {
 	t_philo	*philo;
 	t_data	*data;
 
 	philo = (t_philo *)arg;
 	data = philo->t_data;
+	philo->last_meal = get_current_time();
 	if (data->number_of_philosophers == 1)
+		return (handle_single_philosopher(philo));
+	if (philo->id % 2 == 0)
+		usleep(100);
+	while (!data->someone_die)
 	{
-		pthread_mutex_lock(philo->left_fork);
-		print_state(philo, "has taken a fork");
-		usleep(data->time_to_die * 1000);
-		pthread_mutex_unlock(philo->left_fork);
-		return (NULL);
-	}
-	current_time = get_current_time();
-	while (t_data->someone_die == 0)
-	{
-		t_data->write_mutex("thinking");
-		if (t_philo->id % 2 == 0)
-		{
-			locked(t_philo->left_fork);
-			locked(t_data->write_mutex);
-			printf("taking left fork\n");
-			locked(t_philo->right_fork);
-			locked(t_data->write_mutex)
-			printf("taking rigt fork\n");
-			*t_data->write_mutex("Philo id [%d], is eating");
-		}
+		if (philo->id % 2 == 0)
+			eat_even_philo(philo);
 		else
-		{
-			locked(t_philo->right_fork);
-			t_data->write_mutex("taking right fork");
-			locked(t_philo->left_fork);
-			t_data->write_mutex("taking left fork");
-			*t_data->write_mutex("Philo id [%d], is eating");
-		}
+			eat_odd_philo(philo);
+		print_state(philo, "is sleeping");
+		smart_sleep(data->time_to_sleep, data);
+		print_state(philo, "is thinking");
 	}
+	return (NULL);
 }
 
 

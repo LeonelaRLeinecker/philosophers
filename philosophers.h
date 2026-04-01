@@ -64,6 +64,7 @@ void	cleanup_data(t_data *data);
 void	print_state(t_philo *philo, const char *s);
 void	smart_sleep(long time_in_ms, t_data *data);
 int		init_philosophers(struct s_data *data);
+void	*philo_routine(void *arg);
 
 
 
