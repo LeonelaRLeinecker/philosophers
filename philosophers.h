@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 19:15:32 by lleineck          #+#    #+#             */
-/*   Updated: 2026/03/31 18:13:52 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/04/01 19:08:36 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_data
 {
 	long			number_of_philosophers;
 	long			number_of_forks;
+	long			start_time;
 	long			time_to_die;
 	long			time_to_eat;
 	long			time_to_sleep;
@@ -55,11 +56,14 @@ typedef struct s_timeval
 
 int		ft_atoi_long(const char *s);
 int		validate_args(int argc, char **argv);
-void	parse_and_init(int argc, char **argv, t_data *t_data);
-int		init_mutexes(t_data *t_data);
+void	parse_and_init(int argc, char **argv, t_data *data);
+int		init_mutexes(t_data *tata);
 void	error_exit(const char *error);
 long	get_current_time(void);
-void	cleanup_data(t_data *t_data);
+void	cleanup_data(t_data *data);
+void	print_state(t_philo *philo, const char *s);
+void	smart_sleep(long time_in_ms, t_data *data);
+int		init_philosophers(struct s_data *data);
 
 
 
