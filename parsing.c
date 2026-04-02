@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 19:15:08 by lleineck          #+#    #+#             */
-/*   Updated: 2026/04/01 19:06:34 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/04/02 19:53:50 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 long	ft_atoi_long(const char *str)
 {
-	int	i;
-	int	sign;
+	int		i;
+	int		sign;
 	long	res;
 
 	i = 0;

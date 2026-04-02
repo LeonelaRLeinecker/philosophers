@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 19:15:32 by lleineck          #+#    #+#             */
-/*   Updated: 2026/04/01 19:08:36 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/04/02 18:53:49 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,9 @@ void	print_state(t_philo *philo, const char *s);
 void	smart_sleep(long time_in_ms, t_data *data);
 int		init_philosophers(struct s_data *data);
 void	*philo_routine(void *arg);
+int		check_death(t_data *data, long long now);
+int		check_meals(t_data *data);
+void	*hecate(void *arg);
 
 
 
