@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 16:45:10 by lleineck          #+#    #+#             */
-/*   Updated: 2026/04/01 19:03:26 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/04/03 20:05:29 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	error_exit(const char *error)
 
 long	get_current_time(void)
 {
-	t_timeval	tv;
+	struct timeval	tv;
 
 	if (gettimeofday(&tv, NULL) == -1)
 		return (-1);
@@ -68,7 +68,7 @@ void	smart_sleep(long time_in_ms, t_data *data)
 	while ((get_current_time() - start) < time_in_ms)
 	{
 		pthread_mutex_lock(&data->death_mutex);
-		if (&data->someone_die)
+		if (data->someone_die)
 		{
 			pthread_mutex_unlock(&data->death_mutex);
 			break ;
@@ -77,4 +77,3 @@ void	smart_sleep(long time_in_ms, t_data *data)
 		usleep(500);
 	}
 }
-

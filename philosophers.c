@@ -6,13 +6,13 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 18:29:38 by lleineck          #+#    #+#             */
-/*   Updated: 2026/04/01 19:20:05 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/04/03 20:05:33 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	init_philosophers(struct s_data *data)
+int	init_philosophers(t_data *data)
 {
 	int	i;
 
@@ -99,7 +99,3 @@ void	*philo_routine(void *arg)
 	}
 	return (NULL);
 }
-
-
-
-

@@ -107,3 +107,61 @@ PREGUNTAS PARA VERIFICAR QUE ENTIENDES:
 ¿Qué sucede cuando Hecate detecta muerte?
 ¿Por qué es importante el timestamp base (start_time) en t_data?
 ¿Qué hace someone_die = 1 en los otros threads?
+
+
+creando el main y checkeando casos 
+
+ok
+
+✅ Todo listo
+Excelente, ya tienes todo en su lugar y validado:
+
+init_mutexes() y init_philosophers() se llaman desde setup_data().
+data se enlaza en cada philo con philo->t_data = data.
+Los mutex de forks + write + death se crean en init_mutexes.
+Los hilos se crean en start_simulation y se espera con pthread_join (philos + monitor).
+📌 Recomendación rápida
+Ejecuta:
+make clean && make
+./philosophers 5 800 200 200 5 → debería acabar con All philosophers have eaten enough.
+./philosophers 5 500 200 120 120 → puede terminar en filósofo muerto (died) y eso es aceptable según condiciones de timing.
+Si quieres, puedo darte un mini check list de Norminette y prueba final antes de entregar.
+
+✅ Sí, ahora cumple el subject (mandatorio)
+¡Gran trabajo, lo dejaste muy bien! Con las modificaciones actuales tu proyecto ya cubre la mayoría de los requisitos clave del subject obligatorio.
+
+Lo que ya cumple
+No hay variables globales.
+Argumentos validados con validate_args.
+parse_and_init pone los valores en t_data.
+init_mutexes crea:
+data->forks + mutexes de cada tenedor
+write_mutex
+death_mutex
+init_philosophers crea:
+array data->philos
+valores id, meals_eaten, last_meal, t_data
+left_fork, right_fork
+main ya no llama funciones sin sentido:
+setup_data() maneja parse + init
+start_simulation() crea hilos y monitor + pthread_join a todos
+hecate monitor:
+detecta muerte por time_to_die
+detecta must_eat_count y para con All philosophers have eaten enough
+print_state con write_mutex para evitar solapamiento de prints.
+cleanup_data destruye mutexes y libera memoria.
+Manejo de errores con error_exit y exit(1).
+🔍 Checklist práctico (verificación)
+Ejecutar:
+./philosophers 5 800 200 200 5 → chequeo All philosophers have eaten enough (si el scheduler lo permite)
+./philosophers 5 500 200 120 120 → puede morir (died) y se detiene (aceptable en timing).
+make clean && make sin warnings/errors (got it).
+Comprobar no hay doble pthread_create/join etc. (está bien).
+Norminette en main (<25 líneas) ya está satisfecho con setup_data(), start_simulation().
+⚠️ Aún debes confirmar (solo por robustez / defensa)
+Que el monitor sea thread (pthread_create hecate) y se pthread_join en main.
+Que check_meals efectivamente se evalúa cada ciclo y marca someone_die.
+Que no hay path en el que cleanup_data se ejecute con puntero no inicializado antes de init_* parcialmente hecho (hoy lo manejas).
+🏁 Conclusión
+La respuesta es: sí, el código ahora está alineado con los requisitos del subject mandatorio.
+Solo queda verificar con tus tests finales (timing + must_eat_count) y la defensa: explicar el flujo y por qué se elige esa arquitectura (ya lo tienes).

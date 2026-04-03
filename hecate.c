@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 19:36:30 by lleineck          #+#    #+#             */
-/*   Updated: 2026/04/02 19:03:08 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/04/03 20:25:19 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	check_death(t_data *data, long long now)
 		}
 		i++;
 	}
+	return (0);
 }
 
 int	check_meals(t_data *data)
@@ -69,14 +70,14 @@ void	*hecate(void *arg)
 			break ;
 		}
 		now = get_current_time();
-		if (check_death(data, now) || check_death(data))
+		if (check_death(data, now) || check_meals(data))
 		{
 			pthread_mutex_unlock(&data->death_mutex);
 			return (NULL);
 		}
 		pthread_mutex_unlock(&data->death_mutex);
-		usleep(5000);
+		usleep(100);
+		// usleep(5000);
 	}
 	return (NULL);
 }
-

@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 19:15:32 by lleineck          #+#    #+#             */
-/*   Updated: 2026/04/02 18:53:49 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/04/03 20:03:12 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,19 @@
 # include <sys/time.h>
 # include <limits.h>
 
+typedef struct s_data	t_data;
+typedef struct s_philo	t_philo;
 
+typedef struct s_philo
+{
+	int				id;
+	int				meals_eaten;
+	long			last_meal;
+	pthread_t		thread;
+	t_data			*t_data;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
+}	t_philo;
 
 typedef struct s_data
 {
@@ -37,24 +49,13 @@ typedef struct s_data
 	t_philo			*philos;
 }	t_data;
 
-typedef struct s_philo
-{
-	int				id;
-	int				meals_eaten;
-	long			last_meal;
-	pthread_t		thread;
-	t_data			*t_data;
-	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	*right_fork;
-}	t_philo;
-
 typedef struct s_timeval
 {
 	long	tv_sec;
 	long	tv_usec;
 }	t_timeval;
 
-int		ft_atoi_long(const char *s);
+long	ft_atoi_long(const char *s);
 int		validate_args(int argc, char **argv);
 void	parse_and_init(int argc, char **argv, t_data *data);
 int		init_mutexes(t_data *tata);
@@ -63,14 +64,9 @@ long	get_current_time(void);
 void	cleanup_data(t_data *data);
 void	print_state(t_philo *philo, const char *s);
 void	smart_sleep(long time_in_ms, t_data *data);
-int		init_philosophers(struct s_data *data);
+int		init_philosophers(t_data *data);
 void	*philo_routine(void *arg);
 int		check_death(t_data *data, long long now);
 int		check_meals(t_data *data);
 void	*hecate(void *arg);
-
-
-
-
-
 #endif

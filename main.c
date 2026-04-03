@@ -6,20 +6,65 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 20:02:31 by lleineck          #+#    #+#             */
-/*   Updated: 2026/04/02 19:02:29 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/04/03 20:06:47 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int main(int argc, char **argv)
+static int	setup_data(int argc, char **argv, t_data *data)
 {
-	if (argc != 5 || argc != 6)
-		error_exit("Wrong argument. You must type number of philosophers, time to die,
-			|time to eat, time to sleep and eat counts (optional)");
-	if (argc == 5 || argc == 6)
+	parse_and_init(argc, argv, data);
+	if (!init_mutexes(data))
+		return (0);
+	if (!init_philosophers(data))
+		return (0);
+	data->start_time = get_current_time();
+	return (1);
+}
+
+static void	start_simulation(t_data *data)
+{
+	int			i;
+	pthread_t	monitor_thread;
+
+	i = 0;
+	while (i < data->number_of_philosophers)
 	{
-		
+		data->philos[i].last_meal = data->start_time;
+		if (pthread_create(&data->philos[i].thread, NULL,
+				philo_routine, &data->philos[i]) != 0)
+			error_exit("Thread creation failed");
+		i++;
 	}
-		
+	if (pthread_create(&monitor_thread, NULL, hecate, data) != 0)
+		error_exit("Monitor thread creation failed");
+	i = 0;
+	while (i < data->number_of_philosophers)
+	{
+		pthread_join(data->philos[i].thread, NULL);
+		i++;
+	}
+	pthread_join(monitor_thread, NULL);
+}
+
+int	main(int argc, char **argv)
+{
+	t_data	*data;
+
+	if (!validate_args(argc, argv))
+		error_exit("Wrong type or number of arguments.");
+	data = malloc(sizeof(t_data));
+	if (!data)
+		error_exit("Memory allocation failed for data");
+	if (!setup_data(argc, argv, data))
+	{
+		cleanup_data(data);
+		free(data);
+		error_exit("Initialization failed");
+	}
+	start_simulation(data);
+	cleanup_data(data);
+	free(data);
+	return (0);
 }

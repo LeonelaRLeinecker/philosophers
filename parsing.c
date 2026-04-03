@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 19:15:08 by lleineck          #+#    #+#             */
-/*   Updated: 2026/04/02 19:53:50 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/04/03 20:05:51 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,3 @@ void	parse_and_init(int argc, char **argv, t_data *data)
 	data->someone_die = 0;
 	data->number_of_forks = data->number_of_philosophers;
 }
-
-
