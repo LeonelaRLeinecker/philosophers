@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 18:29:38 by lleineck          #+#    #+#             */
-/*   Updated: 2026/04/03 20:05:33 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/04/07 19:02:53 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,30 @@ void	*philo_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	data = philo->t_data;
-	philo->last_meal = get_current_time();
+	//philo->last_meal = get_current_time();
 	if (data->number_of_philosophers == 1)
 		return (handle_single_philosopher(philo));
 	if (philo->id % 2 == 0)
 		usleep(100);
-	while (!data->someone_die)
+	/*while (!data->someone_die)
 	{
+		if (philo->id % 2 == 0)
+			eat_even_philo(philo);
+		else
+			eat_odd_philo(philo);
+		print_state(philo, "is sleeping");
+		smart_sleep(data->time_to_sleep, data);
+		print_state(philo, "is thinking");
+	}*/
+	while (1)
+	{
+		pthread_mutex_lock(&data->death_mutex);
+		if (data->someone_die)
+		{
+			pthread_mutex_unlock(&data->death_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&data->death_mutex);
 		if (philo->id % 2 == 0)
 			eat_even_philo(philo);
 		else

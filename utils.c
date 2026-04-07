@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 16:45:10 by lleineck          #+#    #+#             */
-/*   Updated: 2026/04/03 20:05:29 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/04/07 19:20:00 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,16 @@ void	print_state(t_philo *philo, const char *s)
 {
 	long	timestamp;
 
-	pthread_mutex_lock(&philo->t_data->write_mutex);
-	if (!philo->t_data->someone_die)
+	pthread_mutex_lock(&philo->t_data->death_mutex);
+	if (philo->t_data->someone_die)
 	{
-		timestamp = get_current_time() - philo->t_data->start_time;
-		printf("%ld %d %s\n", timestamp, philo->id, s);
+		pthread_mutex_unlock(&philo->t_data->death_mutex);
+		return ;
 	}
+	pthread_mutex_unlock(&philo->t_data->death_mutex);
+	pthread_mutex_lock(&philo->t_data->write_mutex);
+	timestamp = get_current_time() - philo->t_data->start_time;
+	printf("%ld %d %s\n", timestamp, philo->id, s);
 	pthread_mutex_unlock(&philo->t_data->write_mutex);
 }
 

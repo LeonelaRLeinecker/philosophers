@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 19:36:30 by lleineck          #+#    #+#             */
-/*   Updated: 2026/04/03 20:25:19 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/04/07 19:25:41 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@ int	check_death(t_data *data, long long now)
 		if (now - data->philos[i].last_meal >= data->time_to_die)
 		{
 			data->someone_die = 1;
+			pthread_mutex_lock(&data->write_mutex);
 			printf("%lld %d died\n", now - data->start_time,
 				data->philos[i].id);
+			pthread_mutex_unlock(&data->write_mutex);
 			return (1);
 		}
 		i++;
@@ -49,7 +51,9 @@ int	check_meals(t_data *data)
 	if (full_count == data->number_of_philosophers)
 	{
 		data->someone_die = 1;
+		pthread_mutex_lock(&data->write_mutex);
 		printf("All philosophers have eaten enough\n");
+		pthread_mutex_unlock(&data->write_mutex);
 		return (1);
 	}
 	return (0);
@@ -76,8 +80,7 @@ void	*hecate(void *arg)
 			return (NULL);
 		}
 		pthread_mutex_unlock(&data->death_mutex);
-		usleep(100);
-		// usleep(5000);
+		usleep(1000);
 	}
 	return (NULL);
 }

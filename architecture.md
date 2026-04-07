@@ -165,3 +165,93 @@ Que no hay path en el que cleanup_data se ejecute con puntero no inicializado an
 🏁 Conclusión
 La respuesta es: sí, el código ahora está alineado con los requisitos del subject mandatorio.
 Solo queda verificar con tus tests finales (timing + must_eat_count) y la defensa: explicar el flujo y por qué se elige esa arquitectura (ya lo tienes).
+
+
+
+
+🧪 Tests para llevar tu proyecto al límite
+Estas pruebas te ayudarán a encontrar deadlocks, data races y fallos de timing.
+
+1) Pruebas de límite de número de filósofos
+./philosophers 200 800 200 200
+
+stress de 200 hilos y 200 mutex.
+verifica que no haya crash ni bloqueos con muchos filósofos.
+./philosophers 200 1000 100 100 1
+
+muchos hilos con un solo ciclo de comida.
+debe acabar con All philosophers have eaten enough.
+2) Pruebas de contención máxima
+./philosophers 5 310 200 100
+./philosophers 5 300 100 100
+./philosophers 5 250 100 100 3
+Busca:
+
+si todos terminan comiendo suficiente
+si hay muertos inesperados
+si el programa se queda colgado
+3) Pruebas de tiempos extremos
+./philosophers 5 1 1 1
+
+el peor caso de starvation.
+debe morir rápido y sin crash.
+./philosophers 5 1000000 1000000 1000000 1
+
+límites altos permitidos.
+verifica que el parseo y la ejecución no fallen.
+4) Pruebas de un solo filósofo
+./philosophers 1 200 100 100
+./philosophers 1 500 200 100 1
+Busca:
+
+si el flujo está bien manejado en el caso n == 1
+si se imprime correctamente y no queda renglon mal formado
+5) Pruebas con must_eat_count
+./philosophers 5 800 200 200 5
+
+debería terminar con All philosophers have eaten enough.
+./philosophers 5 500 200 120 5
+
+debe probar el stop por comida en un escenario apretado.
+./philosophers 5 500 200 120 120
+
+pone en evidencia si la parada por muerte está bien implementada.
+6) Pruebas repetidas por no determinismo
+Ejecuta varias veces el mismo comando:
+./philosophers 5 500 200 120 5
+./philosophers 5 800 200 200
+Si a veces mueren y otras no, estás en un caso típico de scheduling y concurrencia. Eso te indica que debes reforzar la lógica de sincronización, no necesariamente que el output sea inválido.
+7) Pruebas de valgrind
+make run_data
+
+valgrind --tool=helgrind ./philosophers 5 500 200 120 3
+busca data races y accesos concurrentes no protegidos.
+make run_debug
+
+chequea leaks y errores de memoria.
+8) Casos de fallo de argumentos
+philosophers
+./philosophers 5 500 200
+./philosophers 5 500 200 120 abc
+./philosophers -5 500 200 120
+Debe salir con error y no ejecutar.
+
+✅ Cómo interpretar los resultados
+Si hay All philosophers have eaten enough, el stop opcional funciona.
+Si hay X died, la detección de muerte funciona.
+Si se queda congelado o no termina, probablemente hay deadlock.
+Si helgrind muestra data races, revisa accesos a someone_die, last_meal y meals_eaten.
+Si el programa imprime mensajes mezclados, revisa write_mutex.
+💡 Recomendación final
+Para llevarlo realmente al límite, combina:
+
+200 filósofos
+tiempos muy pequeños
+must_eat_count pequeño
+ejecución repetida
+Eso te ayudará a detectar:
+
+deadlock
+condiciones de carrera
+errores de sincronización
+problemas en la inicialización y en el cierre de hilos.
