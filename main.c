@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 20:02:31 by lleineck          #+#    #+#             */
-/*   Updated: 2026/04/03 20:06:47 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/04/08 19:27:10 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,11 @@ static int	setup_data(int argc, char **argv, t_data *data)
 	return (1);
 }
 
-static void	start_simulation(t_data *data)
+/*static void	start_simulation(t_data *data)
 {
 	int			i;
 	pthread_t	monitor_thread;
+	void		*(*philo_func)(void *) = philo_routine;
 
 	i = 0;
 	while (i < data->number_of_philosophers)
@@ -45,6 +46,53 @@ static void	start_simulation(t_data *data)
 		pthread_join(data->philos[i].thread, NULL);
 		i++;
 	}
+	pthread_join(monitor_thread, NULL);
+}*/
+
+static void	create_philos_threads(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->number_of_philosophers)
+	{
+		data->philos[i].last_meal = data->start_time;
+		if (data->number_of_philosophers == 1)
+		{
+			if (pthread_create(&data->philos[i].thread, NULL,
+					handle_single_philosopher, &data->philos[i]) != 0)
+				error_exit("Thread creation failed");
+		}
+		else
+		{
+			if (pthread_create(&data->philos[i].thread, NULL,
+					philo_routine, &data->philos[i]) != 0)
+				error_exit("Thread creation failed");
+		}
+		i++;
+	}
+}
+
+static void	join_philos_threads(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->number_of_philosophers)
+	{
+		pthread_join(data->philos[i].thread, NULL);
+		i++;
+	}
+}
+
+static void	start_simulation(t_data *data)
+{
+	pthread_t	monitor_thread;
+
+	create_philos_threads(data);
+	if (pthread_create(&monitor_thread, NULL, hecate, data) != 0)
+		error_exit("Monitor thread creation failed");
+	join_philos_threads(data);
 	pthread_join(monitor_thread, NULL);
 }
 

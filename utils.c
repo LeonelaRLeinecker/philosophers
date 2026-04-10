@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 16:45:10 by lleineck          #+#    #+#             */
-/*   Updated: 2026/04/07 19:20:00 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/04/09 19:21:45 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,6 @@ void	smart_sleep(long time_in_ms, t_data *data)
 			break ;
 		}
 		pthread_mutex_unlock(&data->death_mutex);
-		usleep(500);
+		usleep(100);
 	}
 }

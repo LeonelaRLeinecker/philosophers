@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME			=	philosophers
+NAME			=	philo
 
 CC				=	cc
 CFLAGS			=	-Wall -Werror -Wextra -pthread
@@ -45,6 +45,6 @@ run_debug:		$(NAME)
 				valgrind --leak-check=full --show-leak-kinds=all \
 					--track-origins=yes --verbose ./$(NAME) 5 500 200 120 3
 run_data: 		$(NAME)
-				valgrind --tool=helgrind ./$(NAME) 5 800 200 200 5
+				valgrind --tool=helgrind ./$(NAME) 5 800 200 100
 
 .PHONY:			all clean fclean re run run_debug run_data
