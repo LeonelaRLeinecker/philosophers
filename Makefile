@@ -21,6 +21,7 @@ SRCS			=	main.c \
 					mutex.c \
 					philosophers.c \
 					utils.c \
+					eaten.c \
 					hecate.c
 
 OBJS			=	$(SRCS:.c=.o)

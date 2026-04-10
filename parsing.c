@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 19:15:08 by lleineck          #+#    #+#             */
-/*   Updated: 2026/04/03 20:05:51 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/04/10 19:57:00 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	parse_and_init(int argc, char **argv, t_data *data)
 	{
 		error_exit("Wrong argument");
 	}
-	data->number_of_philosophers = ft_atoi_long(argv[1]);
+	data->num_of_philos = ft_atoi_long(argv[1]);
 	data->time_to_die = ft_atoi_long(argv[2]);
 	data->time_to_eat = ft_atoi_long(argv[3]);
 	data->time_to_sleep = ft_atoi_long(argv[4]);
@@ -81,8 +81,8 @@ void	parse_and_init(int argc, char **argv, t_data *data)
 		data->must_eat_count = ft_atoi_long(argv[5]);
 	else
 		data->must_eat_count = -1;
-	if (data->number_of_philosophers <= 0
-		|| data->number_of_philosophers > 200
+	if (data->num_of_philos <= 0
+		|| data->num_of_philos > 200
 		|| data->time_to_die <= 0 || data->time_to_die > 1000000
 		|| data->time_to_eat <= 0 || data->time_to_eat > 1000000
 		|| data->time_to_sleep <= 0 || data->time_to_sleep > 1000000
@@ -91,5 +91,5 @@ void	parse_and_init(int argc, char **argv, t_data *data)
 	data->philos = NULL;
 	data->forks = NULL;
 	data->someone_die = 0;
-	data->number_of_forks = data->number_of_philosophers;
+	data->number_of_forks = data->num_of_philos;
 }

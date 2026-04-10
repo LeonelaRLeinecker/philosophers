@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 19:15:32 by lleineck          #+#    #+#             */
-/*   Updated: 2026/04/08 19:25:12 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/04/10 19:55:23 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_philo
 
 typedef struct s_data
 {
-	long			number_of_philosophers;
+	long			num_of_philos;
 	long			number_of_forks;
 	long			start_time;
 	long			time_to_die;
@@ -64,6 +64,9 @@ long	get_current_time(void);
 void	cleanup_data(t_data *data);
 void	print_state(t_philo *philo, const char *s);
 void	smart_sleep(long time_in_ms, t_data *data);
+void	take_forks(t_philo *philo);
+void	put_forks(t_philo *philo);
+void	eat_philo(t_philo *philo);
 int		init_philosophers(t_data *data);
 void	*philo_routine(void *arg);
 void	*handle_single_philosopher(void *arg);

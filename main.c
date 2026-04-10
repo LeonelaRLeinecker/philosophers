@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 20:02:31 by lleineck          #+#    #+#             */
-/*   Updated: 2026/04/08 19:27:10 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/04/10 19:56:34 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ static int	setup_data(int argc, char **argv, t_data *data)
 	parse_and_init(argc, argv, data);
 	if (!init_mutexes(data))
 		return (0);
+	data->start_time = get_current_time();
 	if (!init_philosophers(data))
 		return (0);
-	data->start_time = get_current_time();
 	return (1);
 }
 
@@ -30,7 +30,7 @@ static int	setup_data(int argc, char **argv, t_data *data)
 	void		*(*philo_func)(void *) = philo_routine;
 
 	i = 0;
-	while (i < data->number_of_philosophers)
+	while (i < data->num_of_philos)
 	{
 		data->philos[i].last_meal = data->start_time;
 		if (pthread_create(&data->philos[i].thread, NULL,
@@ -41,7 +41,7 @@ static int	setup_data(int argc, char **argv, t_data *data)
 	if (pthread_create(&monitor_thread, NULL, hecate, data) != 0)
 		error_exit("Monitor thread creation failed");
 	i = 0;
-	while (i < data->number_of_philosophers)
+	while (i < data->num_of_philos)
 	{
 		pthread_join(data->philos[i].thread, NULL);
 		i++;
@@ -54,10 +54,10 @@ static void	create_philos_threads(t_data *data)
 	int	i;
 
 	i = 0;
-	while (i < data->number_of_philosophers)
+	while (i < data->num_of_philos)
 	{
 		data->philos[i].last_meal = data->start_time;
-		if (data->number_of_philosophers == 1)
+		if (data->num_of_philos == 1)
 		{
 			if (pthread_create(&data->philos[i].thread, NULL,
 					handle_single_philosopher, &data->philos[i]) != 0)
@@ -78,7 +78,7 @@ static void	join_philos_threads(t_data *data)
 	int	i;
 
 	i = 0;
-	while (i < data->number_of_philosophers)
+	while (i < data->num_of_philos)
 	{
 		pthread_join(data->philos[i].thread, NULL);
 		i++;
