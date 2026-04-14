@@ -6,7 +6,7 @@
 /*   By: lleineck <lleineck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 18:29:38 by lleineck          #+#    #+#             */
-/*   Updated: 2026/04/10 20:01:26 by lleineck         ###   ########.fr       */
+/*   Updated: 2026/04/14 18:32:19 by lleineck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static void	run_philo_loop(t_philo *philo)
 		print_state(philo, "is sleeping");
 		smart_sleep(data->time_to_sleep, data);
 		print_state(philo, "is thinking");
-		usleep(100);
+		usleep(500);
 	}
 }
 
